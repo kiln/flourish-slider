@@ -1,13 +1,14 @@
 {
   "name": "@flourish/slider",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "Slider UI component",
   "main": "slider.js",
+  "module": "src/slider.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "cd test && rollup -c",
     "prepublish": "rollup -c"
   },
   "author": "Kiln Enterprises Ltd",
