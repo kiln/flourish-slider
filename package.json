@@ -15,7 +15,7 @@
   "author": "Kiln Enterprises Ltd",
   "license": "BSD-3-Clause",
   "devDependencies": {
-    "d3": "^4.4.1",
+    "d3": "^4.4.2",
     "rollup": "^0.41.1",
     "rollup-plugin-node-resolve": "^2.0.0",
     "uglify": "^0.1.5"
@@ -23,5 +23,10 @@
   "repository": {
     "type": "git",
     "url": "git://github.com/kiln/component-slider.git"
+  },
+  "dependencies": {
+    "d3-axis": "^1.0.4",
+    "d3-scale": "^1.0.4",
+    "d3-selection": "^1.0.3"
   }
 }

@@ -1,9 +1,11 @@
-import * as d3 from "d3";
+import { select as d3_select, mouse as d3_mouse, event as d3_event } from "d3-selection";
+import { axisBottom as d3_axisBottom } from "d3-axis";
+import { scaleLinear as d3_scaleLinear } from "d3-scale";
 
 var VERSION = "1.0.0";
 
 function Slider(selector) {
-	this.container = d3.select(selector);
+	this.container = d3_select(selector);
 
 	this._width = null;
 	this._height = null;
@@ -170,7 +172,7 @@ Slider.prototype.draw = function Slider_draw() {
 		})
 		.attr("id", function(d) { return d.id; });
 
-	this.scale = (this._scale ? this._scale() : d3.scaleLinear()).domain(this._domain).range([0, w]);
+	this.scale = (this._scale ? this._scale() : d3_scaleLinear()).domain(this._domain).range([0, w]);
 
 	if (this._value == null || this._value < this._domain[0]) this._value = this._domain[0];
 	else if (this._value > this._domain[1]) this._value = this._domain[1];
@@ -184,7 +186,7 @@ Slider.prototype.draw = function Slider_draw() {
 			axis = this._axis(this.scale);
 		}
 		else {
-			axis = d3.axisBottom().scale(this.scale).tickPadding(6);
+			axis = d3_axisBottom().scale(this.scale).tickPadding(6);
 		}
 
 		if (this._ticks) axis.ticks(this._ticks);
@@ -198,7 +200,7 @@ Slider.prototype.draw = function Slider_draw() {
 	var axes_enter = axes.data(axes_data).enter();
 	axes_enter.append("g").attr("class", "slider-axis")
 		.attr("transform", "translate(" + 0 + "," + this._channelHeight/2 + ")")
-		.each(function(axis) { axis(d3.select(this)); });
+		.each(function(axis) { axis(d3_select(this)); });
 	axes_enter.select(".domain").attr("fill", "none");
 	axes_enter.selectAll(".tick line").attr("stroke", "black");
 	axes_enter.exit().remove();
@@ -212,7 +214,7 @@ Slider.prototype.draw = function Slider_draw() {
 		.attr("fill", this._channelFill)
 		.attr("cursor", "pointer")
 		.on("click", function() {
-			var slider_x = Math.max(0, Math.min(w, d3.mouse(this)[0]));
+			var slider_x = Math.max(0, Math.min(w, d3_mouse(this)[0]));
 			that._value = that.scale.invert(slider_x);
 			if (that._snap) that._value = snapTo(that._snap, that._value);
 			handle.attr("cx", that.scale(that._value));
@@ -256,8 +258,8 @@ Slider.prototype.draw = function Slider_draw() {
 	handle = handle.enter().append("circle").attr("class", "slider-handle")
 		.attr("cursor", "col-resize")
 		.on("mousedown", function() {
-			d3.event.preventDefault();
-			handleMousedown(d3.event);
+			d3_event.preventDefault();
+			handleMousedown(d3_event);
 		})
 		.merge(handle);
 
