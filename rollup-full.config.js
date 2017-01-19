@@ -3,7 +3,7 @@ var nodeResolve = require("rollup-plugin-node-resolve");
 export default {
   entry: "src/slider.js",
   format: "umd",
-  moduleName: "slider",
+  moduleName: "Slider",
   dest: "slider-full.js",
 
   plugins: [
