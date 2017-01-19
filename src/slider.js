@@ -81,7 +81,7 @@ Slider.prototype.fire = function Slider_fire(event, d) {
 	if (!(event in this.handlers)) throw "Kiln.slider.fire: No such event: " + event;
 	var handlers = this.handlers[event];
 	for (var i = 0; i < handlers.length; i++) {
-		handlers[i](d);
+		handlers[i].call(this, d);
 	}
 	return this;
 };
