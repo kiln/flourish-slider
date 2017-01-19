@@ -119,8 +119,8 @@ function snapTo(specification, value) {
 	return closestValue(specification, value);
 }
 
-// Update the slider
-Slider.prototype.update = function Slider_update() {
+// Draw or update the slider
+Slider.prototype.draw = function Slider_draw() {
 	var that = this;
 
 	var cw = this._width,
@@ -330,11 +330,7 @@ Slider.prototype.update = function Slider_update() {
 	return this;
 };
 
-Slider.prototype.draw = function Slider_draw() {
-	this.update();
-	this.fire("change", this._value);
-	return this;
-};
+Slider.prototype.update = Slider.prototype.draw;
 
 function Kiln_slider(selector) {
 	return new Slider(selector);
