@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 
-var VERSION = "0.2-dev";
+var VERSION = "1.0.0";
 
 function Slider(selector) {
 	this.container = d3.select(selector);
