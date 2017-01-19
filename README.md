@@ -4,7 +4,8 @@ The Slider component provides a highly configurable slider control.
 We developed it for use in [Flourish](https://flourish.studio/) templates,
 but it’s open source and you can use it for anything.
 
-```import Slider from "@flourish/slider";
+```
+import Slider from "@flourish/slider";
 
 var slider = Slider("#year-slider")
 	.domain([2000, 2017])
