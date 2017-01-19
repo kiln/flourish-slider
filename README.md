@@ -25,7 +25,7 @@ or another ES6-compatible module bundler. Or you can include the file directly f
 <script src="https://cdn.flourish.rocks/slider-v1.full.min.js"></script>
 ```
 
-Slider uses [D3](https://d3js.org/). If you’re already using d3 on your site then you can
+Slider uses [D3](https://d3js.org/). If you’re already using D3 on your page then you can
 include a much smaller file that uses the `d3` object you already have rather than including
 D3 code in the file.
 
@@ -34,5 +34,55 @@ D3 code in the file.
 ```
 
 If you’re not using D3 for other purposes, it’s more efficient to use the `-full` bundle,
-which is built using rollup to only include the elements of D3 that it actually uses.
+because it’s built using rollup to only include the elements of D3 that it actually uses.
+
+# Using Slider in a Flourish template
+
+The typical way to use Slider in a Flourish template is to create a module-level variable
+in your template source for each slider you use, and a state property for its value:
+```
+var year_slider;
+export var state = {
+	…
+	year: 2000
+};
+```
+
+## In the `draw()` function
+
+Create the slider, setting its value from the state, and draw it:
+```
+	slider = Slider("#slider")
+		.domain([2000, 2017])
+		.startLabel("2000").endLabel("2017")
+		.snap(true)
+		.value(state.year)
+		.onChange(function(year) {
+			// If the user drags the slider, update the state and the graphic
+			state.year = year;
+			update();
+		})
+		.draw();
+```
+
+## In the `update() function
+
+Update the slider from the state:
+```
+	slider.value(state.year).update();
+```
+
+That’s it! If you follow this model, your slider will work correctly in both
+the visualisation editor and the story editor.
+
+# Full reference
+
+* [Constructor](#constructor)
+* [Settings](#settings)
+	* foo
+* [Methods](#methods)
+	* [`.draw()`](#method-draw)
+	* [`.update()`](#method-update)
+
+## Constructor
 
