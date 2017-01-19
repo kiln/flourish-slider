@@ -2,21 +2,23 @@
   "name": "@flourish/slider",
   "version": "1.0.0",
   "description": "Slider UI component",
-  "main": "slider.js",
+  "main": "slider-full.js",
   "module": "src/slider.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
     "test": "cd test && rollup -c",
-    "prepublish": "rollup -c"
+    "prepublish": "rollup -c && rollup -c rollup-full.config.js && npm run minify",
+    "minify": "uglifyjs -m -o slider.min.js slider.js && uglifyjs -m -o slider-full.min.js slider-full.js"
   },
   "author": "Kiln Enterprises Ltd",
-  "license" : "BSD-3-Clause",
+  "license": "BSD-3-Clause",
   "devDependencies": {
     "d3": "^4.4.1",
     "rollup": "^0.41.1",
-    "rollup-plugin-node-resolve": "^2.0.0"
+    "rollup-plugin-node-resolve": "^2.0.0",
+    "uglify": "^0.1.5"
   },
   "repository": {
     "type": "git",

@@ -4,10 +4,7 @@ export default {
   entry: "src/slider.js",
   format: "umd",
   moduleName: "slider",
-  dest: "slider.js",
-
-  external: [ "d3" ],
-  globals: { d3: "d3" },
+  dest: "slider-full.js",
 
   plugins: [
     nodeResolve({jsnext: true})
