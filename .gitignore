@@ -1,4 +1,4 @@
 .DS_Store
 /node_modules
-/test/slider.js
-/test/slider.js.map
+/test/*/test.js
+/test/*/test.js.map

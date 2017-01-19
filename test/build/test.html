@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Kiln slider: test page</title>
+	<script src="../../node_modules/d3/build/d3.js"></script>
+	<script src="../../slider.js"></script>
+	<script src="test.js"></script>
+<style>
+	* { box-sizing: border-box; }
+	p { margin: 0; }
+	.test { margin-top: 30px; padding-top: 20px; border-top: 1px dotted #aaa; position: relative; width: 100%; }
+	.slider { width: 500px; height: 100px; margin: 20px; }
+ 
+	#test1 { height: 60px; }
+	#test1 .slider { margin: 0; position: absolute; height: 100%; width: 400px; top: 50px; left: 0;  }
+	#test1 .output { margin: 0; position: absolute; height: 100%; top: 50px; left: 400px; width: 100px; line-height: 32px; text-align: center; overflow: hidden; }
+	#test1 .buttons { margin: 0; position: absolute; top: 50px; right: 0; line-height: 32px; }
+ 
+	#test3 .slider { height: 50px; width: 150px; }
+	#test10 .slider { height: 50px; width: 105px; }
+}
+</style>
+</head>
+<body>
+	<h1>Kiln slider</h1>
+	<p>Testing the normal build (that relies on external d3).</p>
+	<div class="test" id="test1">
+		<p>The Reset button should move the slider to the middle.</p>
+		<div class="slider"></div>
+		<div class="output"></div>
+		<div class="buttons">
+			<button class="reset">Reset</button>
+			<button class="redraw">Redraw</button>
+		</div>
+	</div>
+
+	<div class="test" id="test2">
+		<p>Moving this slider should update the label.</p>
+		<div class="slider"></div>
+	</div>
+
+	<div class="test" id="test3">
+		<p>This slider should have a matching axis.</p>
+		<div class="slider"></div>
+		<div class="output"></div>
+	</div>
+
+	<div class="test" id="test4">
+		<p>This is a date slider!</p>
+		<div class="slider"></div>
+		<div class="output"></div>
+	</div>
+
+	<div class="test" id="test5">
+		<p>The handle should be on top of the axis</p>
+		<div class="slider"></div>
+	</div>
+
+	<div class="test" id="test6" class="test">
+		<p>This slider has a massive channel and a small handle</p>
+		<div class="slider"></div>
+	</div>
+
+	<div class="test" id="test7" class="test">
+		<p>This slider has a small channel and a massive handle</p>
+		<div class="slider"></div>
+	</div>
+
+	<div class="test" id="test8" class="test">
+		<p>This slider has the same handle size and channel height, and generous margins for its start and end labels</p>
+		<div class="slider"></div>
+	</div>
+
+	<div class="test" id="test9" class="test">
+		<p>Same as above but with start and end labels positioned below</p>
+		<div class="slider"></div>
+	</div>
+
+	<div class="test" id="test10" class="test">
+		<p>This slider is effectively a toggle switch</p>
+		<div class="slider"></div>
+	</div>
+
+	<div class="test" id="test11" class="test">
+		<p>This slider is drawn in an existing SVG</p>
+		<div class="slider">
+			<svg width="400" height="50">
+				<g></g>
+			</svg>
+		</div>
+	</div>
+</body>
+</html>

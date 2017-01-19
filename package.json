@@ -8,7 +8,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "cd test && rollup -c",
+    "test": "for t in build full-build rollup; do ( cd test/$t && rollup -c && open test.html); done",
     "prepublish": "rollup -c && rollup -c rollup-full.config.js && npm run minify",
     "minify": "uglifyjs -m -o slider.min.js slider.js && uglifyjs -m -o slider-full.min.js slider-full.js"
   },

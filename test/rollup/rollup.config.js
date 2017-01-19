@@ -1,9 +1,9 @@
 var nodeResolve = require("rollup-plugin-node-resolve");
 
 export default {
-  entry: "src/slider.js",
+  entry: "../src/tests.js",
   format: "iife",
-  dest: "slider.js",
+  dest: "test.js",
   sourceMap: true,
 
   plugins: [

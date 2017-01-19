@@ -1,6 +1,18 @@
 import { select as d3_select, mouse as d3_mouse, event as d3_event } from "d3-selection";
 import { axisBottom as d3_axisBottom } from "d3-axis";
-import { scaleLinear as d3_scaleLinear } from "d3-scale";
+
+// We’re importing from an individual file rather than the top level of the d3-scale
+// module to work around a tree-shaking issue that otherwise causes a lot of irrelevant
+// d3-scale code to be pulled into the “full” build. See issues:
+//
+// https://github.com/rollup/rollup/issues/305
+// https://github.com/rollup/rollup/issues/1208
+//
+// There are some associated shenanigans in rollup.config.js to accommodate this.
+//
+// If and when rollup manages to avoid this problem, we can revert back to the
+// straightforward approach.
+//import d3_scaleLinear from "../node_modules/d3-scale/src/linear";
 
 var VERSION = "1.0.0";
 

@@ -1,9 +1,22 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('d3-selection'), require('d3-axis'), require('d3-scale')) :
-	typeof define === 'function' && define.amd ? define(['d3-selection', 'd3-axis', 'd3-scale'], factory) :
-	(global.slider = factory(global.d3,global.d3,global.d3));
-}(this, (function (d3Selection,d3Axis,d3Scale) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('d3-selection'), require('d3-axis'), require('../node_modules/d3-scale/src/linear.js')) :
+	typeof define === 'function' && define.amd ? define(['d3-selection', 'd3-axis', '../node_modules/d3-scale/src/linear.js'], factory) :
+	(global.Slider = factory(global.d3,global.d3,global.d3.scaleLinear));
+}(this, (function (d3Selection,d3Axis,d3_scaleLinear) { 'use strict';
 
+d3_scaleLinear = 'default' in d3_scaleLinear ? d3_scaleLinear['default'] : d3_scaleLinear;
+
+// We’re importing from an individual file rather than the top level of the d3-scale
+// module to work around a tree-shaking issue that otherwise causes a lot of irrelevant
+// d3-scale code to be pulled into the “full” build. See issues:
+//
+// https://github.com/rollup/rollup/issues/305
+// https://github.com/rollup/rollup/issues/1208
+//
+// There are some associated shenanigans in rollup.config.js to accommodate this.
+//
+// If and when rollup manages to avoid this problem, we can revert back to the
+// straightforward approach.
 var VERSION = "1.0.0";
 
 function Slider(selector) {
@@ -174,7 +187,7 @@ Slider.prototype.draw = function Slider_draw() {
 		})
 		.attr("id", function(d) { return d.id; });
 
-	this.scale = (this._scale ? this._scale() : d3Scale.scaleLinear()).domain(this._domain).range([0, w]);
+	this.scale = (this._scale ? this._scale() : d3_scaleLinear()).domain(this._domain).range([0, w]);
 
 	if (this._value == null || this._value < this._domain[0]) this._value = this._domain[0];
 	else if (this._value > this._domain[1]) this._value = this._domain[1];
