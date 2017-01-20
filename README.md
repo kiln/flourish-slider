@@ -115,6 +115,8 @@ the visualisation editor and the story editor.
 		* [`endLabel`](#endlabel)
 		* [`endLabelBelow`](#endlabelbelow)
 		* [`startEndLabelSize`](#startendlabelsize)
+* [Properties](#properties)
+	* [version](#version)
 
 ## Constructor
 
@@ -268,3 +270,9 @@ Whether to draw the end label below the slider. Defaults to `false`, which draws
 
 Font size for start and end labels. Defaults to 16. The start and end labels can also be styled in CSS
 using the `.slider-end-labels` class.
+
+## Properties
+
+### `version`
+
+`Slider.version` is the version number of this library, using [Semantic Versioning](http://semver.org/).

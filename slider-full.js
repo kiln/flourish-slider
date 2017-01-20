@@ -2456,7 +2456,7 @@ function linear() {
 //
 // If and when rollup manages to avoid this problem, we can revert back to the
 // straightforward approach.
-var VERSION = "1.1.0";
+var VERSION = "1.2.0";
 
 function Slider(selector$$1) {
 	this.container = d3_select(selector$$1);
@@ -2679,12 +2679,12 @@ Slider.prototype.draw = function Slider_draw() {
 		.attr("x", function(d){ return -d.channel_r; })
 		.attr("rx", function(d) { return d.channel_r; });
 
-	var handle_mousedown_dx_origin, handle_mousedown_x_origin;
+	var drag_dx_origin, drag_x_origin;
 	function handleMousedown(event$$1) {
 		document.addEventListener("mouseup", handleMouseup, false);
 		document.addEventListener("mousemove", handleMousemove, false);
-		handle_mousedown_dx_origin = event$$1.clientX;
-		handle_mousedown_x_origin = that.scale(that._value);
+		drag_dx_origin = event$$1.clientX;
+		drag_x_origin = that.scale(that._value);
 	}
 
 	function handleMouseup() {
@@ -2693,8 +2693,29 @@ Slider.prototype.draw = function Slider_draw() {
 	}
 
 	function handleMousemove(event$$1) {
-		var dx = event$$1.clientX - handle_mousedown_dx_origin;
-		var new_x = handle_mousedown_x_origin + dx;
+		drag(event$$1.clientX - drag_dx_origin);
+	}
+
+	function handleTouchstart(event$$1) {
+		if (event$$1.touches.length != 1) return;
+		document.addEventListener("touchend", handleTouchend, false);
+		document.addEventListener("touchmove", handleTouchmove, false);
+		drag_dx_origin = event$$1.touches[0].clientX;
+		drag_x_origin = that.scale(that._value);
+	}
+
+	function handleTouchend() {
+		document.removeEventListener("touchend", handleTouchend, false);
+		document.removeEventListener("touchmove", handleTouchmove, false);
+	}
+
+	function handleTouchmove(event$$1) {
+		if (event$$1.touches.length != 1) return;
+		drag(event$$1.touches[0].clientX - drag_dx_origin);
+	}
+
+	function drag(dx) {
+		var new_x = drag_x_origin + dx;
 		var slider_x = Math.max(0, Math.min(w, new_x));
 		var new_value = that.scale.invert(slider_x);
 		if (that._snap) new_value = snapTo(that._snap, new_value);
@@ -2716,6 +2737,10 @@ Slider.prototype.draw = function Slider_draw() {
 		.on("mousedown", function() {
 			event.preventDefault();
 			handleMousedown(event);
+		})
+		.on("touchstart", function() {
+			event.preventDefault();
+			handleTouchstart(event);
 		});
 
 	var label_data = [];
