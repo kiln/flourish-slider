@@ -36,6 +36,10 @@ D3 code in the file.
 If you’re not using D3 for other purposes, it’s more efficient to use the `-full` bundle,
 because it’s built using rollup to only include the elements of D3 that it actually uses.
 
+# Interactive example
+
+[Example on codepen](https://codepen.io/robinhouston/pen/xgqWMR)
+
 # Using Slider in a Flourish template
 
 The typical way to use Slider in a Flourish template is to create a module-level variable
