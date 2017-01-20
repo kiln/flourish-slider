@@ -2456,7 +2456,7 @@ function linear() {
 //
 // If and when rollup manages to avoid this problem, we can revert back to the
 // straightforward approach.
-var VERSION = "1.0.1";
+var VERSION = "1.0.2";
 
 function Slider(selector$$1) {
 	this.container = d3_select(selector$$1);

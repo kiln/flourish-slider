@@ -164,7 +164,8 @@ slider.width(200).height(50);
 ```
 
 You can retrieve the current value of a setting by calling the method with no
-arguments, e.g. ```
+arguments, e.g.
+```js
 var handle_radius = slider.handleRadius();
 ```
 
