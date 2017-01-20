@@ -2473,7 +2473,6 @@ function Slider(selector$$1) {
 
 	this._margin = { top: null, left: null, right: null };
 
-	this._transform = null;
 	this._domain = [0,1];
 	this._value = null;
 	this._snap = false;
@@ -2494,8 +2493,6 @@ function Slider(selector$$1) {
 	this._endLabelBelow = false;
 
 	this._startEndLabelSize = 16;
-
-	this._infoLink = null;
 
 	this.handlers = { "change": [] };
 }
@@ -2721,14 +2718,11 @@ Slider.prototype.draw = function Slider_draw() {
 		.attr("r", this._handleRadius)
 		.attr("fill", this._handleFill);
 
-	var label_data = [], infolink_data = [];
+	var label_data = [];
 	if (this._label) {
 		label_data.push({
 			label: this._label, x: w/2, y: -label_h, font_size: this._labelSize
 		});
-		if (this._infoLink) {
-			infolink_data.append({ callback: this._infoLink });
-		}
 	}
 	var label = g.selectAll(".slider-label").data(label_data);
 	label.exit().remove();
@@ -2743,13 +2737,6 @@ Slider.prototype.draw = function Slider_draw() {
 		.attr("x", function(d) { return d.x; })
 		.attr("y", function(d) { return d.y; })
 		.attr("font-size", this._labelSize);
-
-	var infolink = label.selectAll("tspan").data(infolink_data);
-	infolink.enter().append("tspan")
-		.text(" \uf05a")
-		.attr("class", "info-sign")
-		.on("click", this._infoLink);
-	infolink.exit().remove();
 
 	var end_label_data = [];
 	if (this._startLabel) {
