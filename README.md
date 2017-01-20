@@ -159,7 +159,10 @@ can chain them. For example, you can set the dimensions to 200×50 with
 slider.width(200).height(50);
 ```
 
-You can retrieve the current value of a setting by calling 
+You can retrieve the current value of a setting by calling the method with no
+arguments, e.g. ```
+var handle_radius = slider.handleRadius();
+```
 
 ### Core settings
 #### `domain`
