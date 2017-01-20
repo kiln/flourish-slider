@@ -85,24 +85,25 @@ the visualisation editor and the story editor.
 * [Events](#events)
 	* [The `change` event](#change)
 * [Settings](#settings)
-	* [`domain`](#domain)
-	* [`snap`](#snap)
-	* [`width`](#width)
-	* [`height`](#height)
-	* Style settings
+	* [Core settings](#core-settings)
+		* [`domain`](#domain)
+		* [`snap`](#snap)
+		* [`width`](#width)
+		* [`height`](#height)
+	* [Style settings](#style-settings)
 		* [`margin`](#margin)
 		* [`handleRadius`](#handleradius)
 		* [`handleFill`](#handlefill)
 		* [`channelHeight`](#channelheight)
 		* [`channelRadius`](#channelradius)
 		* [`channelFill`](#channelfill)
-	* Axis settings
+	* [Axis settings](#axis-settings)
 		* [`axis`](#axis)
 		* [`scale`](#scale)
 		* [`ticks`](#ticks)
 		* [`tickFormat`](#tickformat)
 		* [`tickSize`](#ticksize)
-	* Label settings
+	* [Label settings](#label-settings)
 		* [`label`](#label)
 		* [`labelSize`](#labelsize)
 		* [`startLabel`](#startlabel)
@@ -160,17 +161,18 @@ slider.width(200).height(50);
 
 You can retrieve the current value of a setting by calling 
 
-### `domain`
+### Core settings
+#### `domain`
 An array of two numbers specifying the range of values the slider can take.
 Defaults to `[0, 1]`.
 
-### `snap`
+#### `snap`
 If `true`, snap to the nearest whole number. If a sorted array, snap to
 the nearest value in the array. Defaults to `false`, which gives a continuous
 slider.
 
 
-### `width`
+#### `width`
 The width of the slider element. If this is not specified, the
 slider fills the whole container.
 
