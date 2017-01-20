@@ -17,7 +17,7 @@ d3_scaleLinear = 'default' in d3_scaleLinear ? d3_scaleLinear['default'] : d3_sc
 //
 // If and when rollup manages to avoid this problem, we can revert back to the
 // straightforward approach.
-var VERSION = "1.0.0";
+var VERSION = "1.0.1";
 
 function Slider(selector) {
 	this.container = d3Selection.select(selector);

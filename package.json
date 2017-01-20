@@ -1,6 +1,6 @@
 {
   "name": "@flourish/slider",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Slider UI component",
   "main": "slider-full.js",
   "module": "src/slider.js",
