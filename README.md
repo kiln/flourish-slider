@@ -4,7 +4,7 @@ The Slider component provides a highly configurable slider control.
 We developed it for use in [Flourish](https://flourish.studio/) templates,
 but it’s open source and you can use it for anything.
 
-```
+```js
 import Slider from "@flourish/slider";
 
 var slider = Slider("#year-slider")
@@ -21,7 +21,7 @@ It’s developed as an ES6 module, and you can use it with [rollup.js](http://ro
 and [rollup-plugin-node-resolve](https://github.com/rollup/rollup-plugin-node-resolve),
 or another ES6-compatible module bundler. Or you can include the file directly from the web:
 
-```
+```html
 <script src="https://cdn.flourish.rocks/slider-v1.full.min.js"></script>
 ```
 
@@ -29,7 +29,7 @@ Slider uses [D3](https://d3js.org/). If you’re already using D3 on your page t
 include a much smaller file that uses the `d3` object you already have rather than including
 D3 code in the file.
 
-```
+```html
 <script src="https://cdn.flourish.rocks/slider-v1.min.js"></script>
 ```
 
@@ -40,7 +40,7 @@ because it’s built using rollup to only include the elements of D3 that it act
 
 The typical way to use Slider in a Flourish template is to create a module-level variable
 in your template source for each slider you use, and a state property for its value:
-```
+```js
 var year_slider;
 export var state = {
 	…
@@ -51,7 +51,7 @@ export var state = {
 ## In the `draw()` function
 
 Create the slider, set its value from the state, and draw it:
-```
+```js
 slider = Slider("#slider")
 	.domain([2000, 2017])
 	.startLabel("2000").endLabel("2017")
@@ -68,7 +68,7 @@ slider = Slider("#slider")
 ## In the `update()` function
 
 Update the slider from the state:
-```
+```js
 slider.value(state.year).update();
 ```
 
@@ -153,8 +153,8 @@ as an argument, and its `this` object is the Slider instance.
 Settings are applied by calling the method of the same name on the Slider object
 with the new value as an argument. These methods return the Slider object, so you
 can chain them. For example, you can set the dimensions to 200×50 with
-```
-	slider.width(200).height(50);
+```js
+slider.width(200).height(50);
 ```
 
 You can retrieve the current value of a setting by calling 
