@@ -1,6 +1,6 @@
 {
   "name": "@flourish/slider",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Slider UI component",
   "main": "slider-full.js",
   "module": "src/slider.js",
@@ -8,7 +8,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "for t in build full-build rollup; do ( cd test/$t && rollup -c && open test.html); done",
+    "test": "for t in build full-build rollup; do ( cd test/$t && rollup -c && cat preamble.html ../tests.html > test.html && open test.html); done",
     "prepublish": "rollup -c && rollup -c rollup-full.config.js && npm run minify",
     "minify": "uglifyjs -m -o slider.min.js slider.js && uglifyjs -m -o slider-full.min.js slider-full.js"
   },

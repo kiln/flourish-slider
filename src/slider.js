@@ -14,7 +14,7 @@ import { axisBottom as d3_axisBottom } from "d3-axis";
 // straightforward approach.
 import d3_scaleLinear from "../node_modules/d3-scale/src/linear";
 
-var VERSION = "1.0.2";
+var VERSION = "1.1.0";
 
 function Slider(selector) {
 	this.container = d3_select(selector);
@@ -151,7 +151,7 @@ Slider.prototype.draw = function Slider_draw() {
 		ch = r.height;
 	}
 
-	var channel_r = this._channelRadius || this._channelHeight/2,
+	var channel_r = this._channelRadius == null ? this._channelHeight/2 : this._channelRadius,
 	    left_margin = (this._margin.left == null ? Math.max(this._handleRadius, channel_r) : this._margin.left),
 	    right_margin = (this._margin.right == null ? Math.max(this._handleRadius, channel_r) : this._margin.right),
 	    top_margin = this._margin.top == null ? Math.max(this._handleRadius, this._channelHeight/2) : this._margin.top,

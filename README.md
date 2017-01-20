@@ -212,8 +212,8 @@ using the `.slider-handle` class.
 The height of the slider channel. Defaults to 15 if not supplied.
 
 #### `channelRadius`
-The radius of the corners of the channel. If it’s null then the channel is
-a rectangle without rounded corners. Defaults to null.
+The radius of the corners of the channel. Defaults to null, which means half
+the channelHeight, giving the channel rounded ends.
 
 #### `channelFill`
 The color of the channel. Defaults to `#eee`. The channel also be styled in CSS

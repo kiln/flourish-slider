@@ -17,7 +17,7 @@ d3_scaleLinear = 'default' in d3_scaleLinear ? d3_scaleLinear['default'] : d3_sc
 //
 // If and when rollup manages to avoid this problem, we can revert back to the
 // straightforward approach.
-var VERSION = "1.0.2";
+var VERSION = "1.1.0";
 
 function Slider(selector) {
 	this.container = d3Selection.select(selector);
@@ -154,7 +154,7 @@ Slider.prototype.draw = function Slider_draw() {
 		ch = r.height;
 	}
 
-	var channel_r = this._channelRadius || this._channelHeight/2,
+	var channel_r = this._channelRadius == null ? this._channelHeight/2 : this._channelRadius,
 	    left_margin = (this._margin.left == null ? Math.max(this._handleRadius, channel_r) : this._margin.left),
 	    right_margin = (this._margin.right == null ? Math.max(this._handleRadius, channel_r) : this._margin.right),
 	    top_margin = this._margin.top == null ? Math.max(this._handleRadius, this._channelHeight/2) : this._margin.top,

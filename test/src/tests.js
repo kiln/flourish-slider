@@ -201,6 +201,18 @@ function test11() {
 	sliders.test11 = slider;
 }
 
+function test12() {
+	var slider = Slider("#test12 .slider")
+		.tickFormat(d3.format("d"))
+		.margin({ left: 42, right: 42 })
+		.handleRadius(15)
+		.channelHeight(30)
+		.channelRadius(0)
+		.draw();
+
+	sliders.test10 = slider;
+}
+
 document.addEventListener("DOMContentLoaded", function() {
 	test1();
 	test2();
@@ -213,4 +225,5 @@ document.addEventListener("DOMContentLoaded", function() {
 	test9();
 	test10();
 	test11();
+	test12();
 });
