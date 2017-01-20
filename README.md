@@ -196,12 +196,12 @@ always get this right if you’re using start and end labels.)
 
 Defaults to `{ top: null, left: null, right: null }`.
 
-
 #### `handleRadius`
 The radius of the circular slider handle. Defaults to 15 if not supplied.
 
 #### `handleFill`
-The color of the handle. Defaults to `black`.
+The color of the handle. Defaults to `black`. The handle can also be styled in CSS
+using the `.slider-handle` class.
 
 #### `channelHeight`
 The height of the slider channel. Defaults to 15 if not supplied.
@@ -211,8 +211,8 @@ The radius of the corners of the channel. If it’s null then the channel is
 a rectangle without rounded corners. Defaults to null.
 
 #### `channelFill`
-The color of the channel. Defaults to `#eee`.
-
+The color of the channel. Defaults to `#eee`. The channel also be styled in CSS
+using the `.slider-channel` class.
 
 
 ### Axis options
@@ -241,7 +241,7 @@ Label text to draw above the slider. Defaults to null, which means no label.
 
 #### `labelSize`
 
-Font size for label. Defaults to 18.
+Font size for label. Defaults to 18. The label can also be styled in CSS using the `.slider-label` class.
 
 #### `startLabel`
 
@@ -261,4 +261,5 @@ Whether to draw the end label below the slider. Defaults to `false`, which draws
 
 #### `startEndLabelSize`
 
-Font size for start and end labels. Defaults to 16.
+Font size for start and end labels. Defaults to 16. The start and end labels can also be styled in CSS
+using the `.slider-end-labels` class.
