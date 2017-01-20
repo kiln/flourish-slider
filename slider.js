@@ -269,15 +269,15 @@ Slider.prototype.draw = function Slider_draw() {
 	handle = g.selectAll(".slider-handle").data([{ v: this._value, x: this.scale(this._value) }]);
 	handle = handle.enter().append("circle").attr("class", "slider-handle")
 		.attr("cursor", "col-resize")
-		.on("mousedown", function() {
-			d3Selection.event.preventDefault();
-			handleMousedown(d3Selection.event);
-		})
 		.merge(handle);
 
 	handle.attr("cx", function(d) { return d.x; })
 		.attr("r", this._handleRadius)
-		.attr("fill", this._handleFill);
+		.attr("fill", this._handleFill)
+		.on("mousedown", function() {
+			d3Selection.event.preventDefault();
+			handleMousedown(d3Selection.event);
+		});
 
 	var label_data = [];
 	if (this._label) {

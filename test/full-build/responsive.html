@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+<head>
+<style>
+body {
+  font-family: sans-serif;
+  background: #222;
+}
+
+#slider {
+  width: 60%;
+  height: 60px;
+  margin: auto;
+}
+
+#slider .slider-label {
+  fill: white;
+}
+</style>
+<script src="../../slider-full.js"></script>
+</head>
+<body>
+<div id="slider"></div>
+<script>
+var slider = Slider("#slider")
+  .channelHeight(30)
+  .channelFill("#eee")
+  .handleRadius(15)
+  .handleFill("#57c1fc")
+  .domain([0, 100])
+  .on("change", function(value) {
+    slider.label(Math.round(value) + "%").update();
+  })
+  .label("0%")
+  .draw();
+
+window.addEventListener("resize", function() {
+  // Tell the slider it has changed size
+  slider.update();
+});
+</script>
+</body>
+</html>
