@@ -89,19 +89,20 @@ the visualisation editor and the story editor.
 	* [`snap`](#snap)
 	* [`width`](#width)
 	* [`height`](#height)
-	* [`margin`](#margin)
-	* [`handleRadius`](#handleradius)
-	* [`handleFill`](#handlefill)
-	* [`channelHeight`](#channelheight)
-	* [`channelRadius`](#channelradius)
-	* [`channelFill`](#channelfill)
-	* Axis options
+	* Style settings
+		* [`margin`](#margin)
+		* [`handleRadius`](#handleradius)
+		* [`handleFill`](#handlefill)
+		* [`channelHeight`](#channelheight)
+		* [`channelRadius`](#channelradius)
+		* [`channelFill`](#channelfill)
+	* Axis settings
 		* [`axis`](#axis)
 		* [`scale`](#scale)
 		* [`ticks`](#ticks)
 		* [`tickFormat`](#tickformat)
 		* [`tickSize`](#ticksize)
-	* Label options
+	* Label settings
 		* [`label`](#label)
 		* [`labelSize`](#labelsize)
 		* [`startLabel`](#startlabel)
@@ -181,7 +182,8 @@ width and height *must* be specified
 The height of the slider element. Should be supplied if and only if
 `width` is also supplied.
 
-### `margin`
+### Style settings
+#### `margin`
 This should be an object with properties `top`, `left`, and `right`.
 If any of these properties is omitted or null, the library will try
 to choose a sensible margin based on the other parameters. (It doesn’t
@@ -190,20 +192,20 @@ always get this right if you’re using start and end labels.)
 Defaults to `{ top: null, left: null, right: null }`.
 
 
-### `handleRadius`
+#### `handleRadius`
 The radius of the circular slider handle. Defaults to 15 if not supplied.
 
-### `handleFill`
+#### `handleFill`
 The color of the handle. Defaults to `black`.
 
-### `channelHeight`
+#### `channelHeight`
 The height of the slider channel. Defaults to 15 if not supplied.
 
-### `channelRadius`
+#### `channelRadius`
 The radius of the corners of the channel. If it’s null then the channel is
 a rectangle without rounded corners. Defaults to null.
 
-### `channelFill`
+#### `channelFill`
 The color of the channel. Defaults to `#eee`.
 
 
