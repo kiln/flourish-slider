@@ -1,6 +1,6 @@
 # Flourish slider component
 
-The Slider component provides a highly configurable slider control.
+The Slider component provides a configurable slider control.
 We developed it for use in [Flourish](https://flourish.studio/) templates,
 but it’s open source and you can use it for anything.
 
