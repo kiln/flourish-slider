@@ -11,7 +11,7 @@ var slider = Slider("#year-slider")
 	.domain([2000, 2017])
 	.startLabel("2000").endLabel("2017")
 	.snap(true)
-	.onChange(function(year) {
+	.on("change", function(year) {
 		console.log("Year set to", year);
 	})
 	.draw();
