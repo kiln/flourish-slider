@@ -22,7 +22,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/kiln/component-slider.git"
+    "url": "git://github.com/kiln/flourish-slider.git"
   },
   "dependencies": {
     "d3-axis": "^1.0.4",
