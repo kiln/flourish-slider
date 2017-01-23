@@ -86,6 +86,7 @@ the visualisation editor and the story editor.
 	* [`.draw()`](#draw)
 	* [`.update()`](#update)
 	* [`.value()`](#value)
+	* [`.on(event, handler)`](#on-event-handler)
 * [Events](#events)
 	* [The `change` event](#change)
 * [Settings](#settings)
