@@ -12,7 +12,7 @@ import { axisBottom as d3_axisBottom } from "d3-axis";
 //
 // If and when rollup manages to avoid this problem, we can revert back to the
 // straightforward approach.
-import d3_scaleLinear from "../node_modules/d3-scale/src/linear";
+import d3_scaleLinear from "d3-scale/src/linear";
 
 var VERSION = "1.2.3";
 
