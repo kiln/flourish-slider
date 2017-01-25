@@ -14,7 +14,7 @@ import { axisBottom as d3_axisBottom } from "d3-axis";
 // straightforward approach.
 import d3_scaleLinear from "d3-scale/src/linear";
 
-var VERSION = "1.2.3";
+var VERSION = "1.3.0";
 
 function Slider(selector) {
 	this.container = d3_select(selector);
@@ -75,21 +75,21 @@ Slider.prototype.margin = function Slider_margin(options) {
 	if (!options) return this._margin;
 	for (k in options) {
 		if (k in this._margin) this._margin[k] = options[k];
-		else throw "Kiln.slider.margin: unrecognised option " + k;
+		else throw "Slider.margin: unrecognised option " + k;
 	}
 	return this;
 };
 
 // Attach event handlers
 Slider.prototype.on = function Slider_on(event, handler) {
-	if (!(event in this.handlers)) throw "Kiln.slider.on: No such event: " + event;
+	if (!(event in this.handlers)) throw "Slider.on: No such event: " + event;
 	this.handlers[event].push(handler);
 	return this;
 };
 
 // Fire event
 Slider.prototype.fire = function Slider_fire(event, d) {
-	if (!(event in this.handlers)) throw "Kiln.slider.fire: No such event: " + event;
+	if (!(event in this.handlers)) throw "Slider.fire: No such event: " + event;
 	var handlers = this.handlers[event];
 	for (var i = 0; i < handlers.length; i++) {
 		handlers[i].call(this, d);
@@ -358,9 +358,9 @@ Slider.prototype.draw = function Slider_draw() {
 
 Slider.prototype.update = Slider.prototype.draw;
 
-function Kiln_slider(selector) {
+function Flourish_slider(selector) {
 	return new Slider(selector);
 }
-Kiln_slider.version = VERSION;
+Flourish_slider.version = VERSION;
 
-export default Kiln_slider;
+export default Flourish_slider;

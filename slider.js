@@ -17,7 +17,7 @@ d3_scaleLinear = 'default' in d3_scaleLinear ? d3_scaleLinear['default'] : d3_sc
 //
 // If and when rollup manages to avoid this problem, we can revert back to the
 // straightforward approach.
-var VERSION = "1.2.3";
+var VERSION = "1.3.0";
 
 function Slider(selector) {
 	this.container = d3Selection.select(selector);
@@ -78,21 +78,21 @@ Slider.prototype.margin = function Slider_margin(options) {
 	if (!options) return this._margin;
 	for (k in options) {
 		if (k in this._margin) this._margin[k] = options[k];
-		else throw "Kiln.slider.margin: unrecognised option " + k;
+		else throw "Slider.margin: unrecognised option " + k;
 	}
 	return this;
 };
 
 // Attach event handlers
 Slider.prototype.on = function Slider_on(event$$1, handler) {
-	if (!(event$$1 in this.handlers)) throw "Kiln.slider.on: No such event: " + event$$1;
+	if (!(event$$1 in this.handlers)) throw "Slider.on: No such event: " + event$$1;
 	this.handlers[event$$1].push(handler);
 	return this;
 };
 
 // Fire event
 Slider.prototype.fire = function Slider_fire(event$$1, d) {
-	if (!(event$$1 in this.handlers)) throw "Kiln.slider.fire: No such event: " + event$$1;
+	if (!(event$$1 in this.handlers)) throw "Slider.fire: No such event: " + event$$1;
 	var handlers = this.handlers[event$$1];
 	for (var i = 0; i < handlers.length; i++) {
 		handlers[i].call(this, d);
@@ -361,11 +361,11 @@ Slider.prototype.draw = function Slider_draw() {
 
 Slider.prototype.update = Slider.prototype.draw;
 
-function Kiln_slider(selector) {
+function Flourish_slider(selector) {
 	return new Slider(selector);
 }
-Kiln_slider.version = VERSION;
+Flourish_slider.version = VERSION;
 
-return Kiln_slider;
+return Flourish_slider;
 
 })));
