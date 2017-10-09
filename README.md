@@ -40,6 +40,10 @@ because it’s built using rollup to only include the elements of D3 that it act
 
 [Example on codepen](https://codepen.io/robinhouston/pen/xgqWMR)
 
+# What’s changed
+
+Version 2 changes the class names of slider to have the prefix `flourish-slider`: in previous versions the prefix was just `slider-`. So you may have to change your CSS if you upgrade to version 2 from an earlier version.
+
 # Using Slider in a Flourish template
 
 The typical way to use Slider in a Flourish template is to create a module-level variable
@@ -209,7 +213,7 @@ The radius of the circular slider handle. Defaults to 15 if not supplied.
 
 #### `handleFill`
 The color of the handle. Defaults to `black`. The handle can also be styled in CSS
-using the `.slider-handle` class.
+using the `.flourish-slider-handle` class.
 
 #### `channelHeight`
 The height of the slider channel. Defaults to 15 if not supplied.
@@ -220,7 +224,7 @@ the channelHeight, giving the channel rounded ends.
 
 #### `channelFill`
 The color of the channel. Defaults to `#eee`. The channel also be styled in CSS
-using the `.slider-channel` class.
+using the `.flourish-slider-channel` class.
 
 
 ### Axis options
@@ -249,7 +253,7 @@ Label text to draw above the slider. Defaults to null, which means no label.
 
 #### `labelSize`
 
-Font size for label. Defaults to 18. The label can also be styled in CSS using the `.slider-label` class.
+Font size for label. Defaults to 18. The label can also be styled in CSS using the `.flourish-slider-label` class.
 
 #### `startLabel`
 
@@ -270,7 +274,7 @@ Whether to draw the end label below the slider. Defaults to `false`, which draws
 #### `startEndLabelSize`
 
 Font size for start and end labels. Defaults to 16. The start and end labels can also be styled in CSS
-using the `.slider-end-labels` class.
+using the `.flourish-slider-end-labels` class.
 
 ## Properties
 

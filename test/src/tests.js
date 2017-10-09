@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import Slider from "../../src/slider";
+import Slider from "../../src/index";
 
 
 // Expose the slider objects so we can play around with them in the console
@@ -7,7 +7,7 @@ var sliders = window.sliders = {};
 
 function test1() {
 	var output = d3.select("#test1 .output");
-	var slider = Slider("#test1 .slider").margin({top: 13})
+	var slider = Slider("#test1 .slider").margin({top: 16})
 		.on("change", function(x) {
 			output.text(d3.format(".4f")(x));
 		})
@@ -174,7 +174,6 @@ function test9() {
 function test10() {
 	var slider = Slider("#test10 .slider")
 		.domain([0, 1])
-		.tickFormat(d3.format("d"))
 		.value(0)
 		.margin({ left: 42, right: 42 })
 		.snap(true)

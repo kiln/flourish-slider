@@ -1,11 +1,11 @@
 var path = require("path"),
     nodeResolve = require("rollup-plugin-node-resolve");
 
-// See the comment in src/slider.js
+// See the comment in src/draw.js
 const d3_scale_linear = path.resolve("./node_modules/d3-scale/src/linear.js");
 
 export default {
-  entry: "src/slider.js",
+  entry: "src/index.js",
   format: "umd",
   moduleName: "Slider",
   dest: "slider.js",

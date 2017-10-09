@@ -1,7 +1,7 @@
 var path = require("path"),
     nodeResolve = require("rollup-plugin-node-resolve");
 
-const slider_path = path.resolve("../../src/slider.js");
+const slider_path = path.resolve("../../src/index.js");
 
 export default {
   entry: "../src/tests.js",

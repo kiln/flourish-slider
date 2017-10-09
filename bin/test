@@ -1,0 +1,23 @@
+#!/bin/bash
+
+set -ex
+
+test() {
+	for d in "$@"
+	do
+		(
+			cd test/"$1"
+
+			rollup -c
+			cat preamble.html ../tests.html > test.html
+			open test.html
+		)
+	done
+}
+
+if [ $# -eq 0 ]
+then
+	test build full-build rollup
+else
+	test "$@"
+fi
