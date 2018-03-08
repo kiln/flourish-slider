@@ -112,7 +112,7 @@ function closestValue(sorted_list, value, a, b) {
 	}
 
 	var mid = a + Math.floor((b-a) / 2),
-	    mid_v = sorted_list[mid]
+	    mid_v = sorted_list[mid],
 	    pre = mid - 1,
 	    pre_v = sorted_list[pre];
 	if (pre_v <= value && value <= mid_v) {
