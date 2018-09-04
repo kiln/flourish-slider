@@ -34,7 +34,7 @@ function Slider(selector) {
 
 	this._margin = { top: null, left: null, right: null };
 
-	this._domain = [0,1];
+	this._domain = [0, 1];
 	this._value = null;
 	this._snap = false;
 
@@ -115,7 +115,7 @@ function closestValue(sorted_list, value, a, b) {
 	}
 
 	var mid = a + Math.floor((b-a) / 2),
-	    mid_v = sorted_list[mid];
+	    mid_v = sorted_list[mid],
 	    pre = mid - 1,
 	    pre_v = sorted_list[pre];
 	if (pre_v <= value && value <= mid_v) {
@@ -180,9 +180,9 @@ Slider.prototype.draw = function Slider_draw() {
 	g.exit().remove();
 	g = g.enter().append("g").attr("class", "slider-container").merge(g);
 	g.attr("transform", function(d) {
-			return "translate(" + d.left + "," + d.top + ")";
-		})
-		.attr("id", function(d) { return d.id; });
+		return "translate(" + d.left + "," + d.top + ")";
+	})
+	.attr("id", function(d) { return d.id; });
 
 	this.scale = (this._scale ? this._scale() : d3_scaleLinear()).domain(this._domain).range([0, w]);
 
@@ -237,7 +237,7 @@ Slider.prototype.draw = function Slider_draw() {
 	channel.attr("width", function(d) { return d.width; })
 		.attr("height", function(d) { return d.height; })
 		.attr("y", function(d) { return -d.height/2; })
-		.attr("x", function(d){ return -d.channel_r; })
+		.attr("x", function(d) { return -d.channel_r; })
 		.attr("rx", function(d) { return d.channel_r; });
 
 	var drag_dx_origin, drag_x_origin;
@@ -328,19 +328,19 @@ Slider.prototype.draw = function Slider_draw() {
 	if (this._startLabel) {
 		end_label_data.push({
 			label: this._startLabel,
-				x: this._startLabelBelow ? 0 : -(channel_r + 5 + Math.max(0, this._handleRadius - channel_r)),
-				y: this._startLabelBelow ? (channel_r + 15) : this._startEndLabelSize/1.75 - channel_r/2,
-				anchor: this._startLabelBelow ? "middle" : "end",
-				font_size: this._startEndLabelSize
+			x: this._startLabelBelow ? 0 : -(channel_r + 5 + Math.max(0, this._handleRadius - channel_r)),
+			y: this._startLabelBelow ? (channel_r + 15) : this._startEndLabelSize/1.75 - channel_r/2,
+			anchor: this._startLabelBelow ? "middle" : "end",
+			font_size: this._startEndLabelSize
 		});
 	}
 	if (this._endLabel) {
 		end_label_data.push({
 			label: this._endLabel,
-				x: this._endLabelBelow ? w : w + (channel_r + Math.max(0, this._handleRadius - channel_r) + 5),
-				y: this._startLabelBelow ? (channel_r + 15) : this._startEndLabelSize/1.75 - channel_r/2,
-				anchor: this._endLabelBelow ? "middle" : "start",
-				font_size: this._startEndLabelSize
+			x: this._endLabelBelow ? w : w + (channel_r + Math.max(0, this._handleRadius - channel_r) + 5),
+			y: this._startLabelBelow ? (channel_r + 15) : this._startEndLabelSize/1.75 - channel_r/2,
+			anchor: this._endLabelBelow ? "middle" : "start",
+			font_size: this._startEndLabelSize
 		});
 	}
 

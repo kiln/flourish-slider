@@ -31,7 +31,7 @@ function Slider(selector) {
 
 	this._margin = { top: null, left: null, right: null };
 
-	this._domain = [0,1];
+	this._domain = [0, 1];
 	this._value = null;
 	this._snap = false;
 
@@ -177,9 +177,9 @@ Slider.prototype.draw = function Slider_draw() {
 	g.exit().remove();
 	g = g.enter().append("g").attr("class", "slider-container").merge(g);
 	g.attr("transform", function(d) {
-			return "translate(" + d.left + "," + d.top + ")";
-		})
-		.attr("id", function(d) { return d.id; });
+		return "translate(" + d.left + "," + d.top + ")";
+	})
+	.attr("id", function(d) { return d.id; });
 
 	this.scale = (this._scale ? this._scale() : d3_scaleLinear()).domain(this._domain).range([0, w]);
 
@@ -234,20 +234,20 @@ Slider.prototype.draw = function Slider_draw() {
 	channel.attr("width", function(d) { return d.width; })
 		.attr("height", function(d) { return d.height; })
 		.attr("y", function(d) { return -d.height/2; })
-		.attr("x", function(d){ return -d.channel_r; })
+		.attr("x", function(d) { return -d.channel_r; })
 		.attr("rx", function(d) { return d.channel_r; });
 
 	var drag_dx_origin, drag_x_origin;
 	function handleMousedown(event) {
 		document.addEventListener("mouseup", handleMouseup, false);
-		document.addEventListener("mousemove", handleMousemove, false)
+		document.addEventListener("mousemove", handleMousemove, false);
 		drag_dx_origin = event.clientX;
 		drag_x_origin = that.scale(that._value);
 	}
 
 	function handleMouseup() {
 		document.removeEventListener("mouseup", handleMouseup, false);
-		document.removeEventListener("mousemove", handleMousemove, false)
+		document.removeEventListener("mousemove", handleMousemove, false);
 	}
 
 	function handleMousemove(event) {
@@ -257,14 +257,14 @@ Slider.prototype.draw = function Slider_draw() {
 	function handleTouchstart(event) {
 		if (event.touches.length != 1) return;
 		document.addEventListener("touchend", handleTouchend, false);
-		document.addEventListener("touchmove", handleTouchmove, false)
+		document.addEventListener("touchmove", handleTouchmove, false);
 		drag_dx_origin = event.touches[0].clientX;
 		drag_x_origin = that.scale(that._value);
 	}
 
 	function handleTouchend() {
 		document.removeEventListener("touchend", handleTouchend, false);
-		document.removeEventListener("touchmove", handleTouchmove, false)
+		document.removeEventListener("touchmove", handleTouchmove, false);
 	}
 
 	function handleTouchmove(event) {
@@ -299,7 +299,7 @@ Slider.prototype.draw = function Slider_draw() {
 		.on("touchstart", function() {
 			d3_event.preventDefault();
 			handleTouchstart(d3_event);
-		})
+		});
 
 	var label_data = [];
 	if (this._label) {
@@ -325,19 +325,19 @@ Slider.prototype.draw = function Slider_draw() {
 	if (this._startLabel) {
 		end_label_data.push({
 			label: this._startLabel,
-				x: this._startLabelBelow ? 0 : -(channel_r + 5 + Math.max(0, this._handleRadius - channel_r)),
-				y: this._startLabelBelow ? (channel_r + 15) : this._startEndLabelSize/1.75 - channel_r/2,
-				anchor: this._startLabelBelow ? "middle" : "end",
-				font_size: this._startEndLabelSize
+			x: this._startLabelBelow ? 0 : -(channel_r + 5 + Math.max(0, this._handleRadius - channel_r)),
+			y: this._startLabelBelow ? (channel_r + 15) : this._startEndLabelSize/1.75 - channel_r/2,
+			anchor: this._startLabelBelow ? "middle" : "end",
+			font_size: this._startEndLabelSize
 		});
 	}
 	if (this._endLabel) {
 		end_label_data.push({
 			label: this._endLabel,
-				x: this._endLabelBelow ? w : w + (channel_r + Math.max(0, this._handleRadius - channel_r) + 5),
-				y: this._startLabelBelow ? (channel_r + 15) : this._startEndLabelSize/1.75 - channel_r/2,
-				anchor: this._endLabelBelow ? "middle" : "start",
-				font_size: this._startEndLabelSize
+			x: this._endLabelBelow ? w : w + (channel_r + Math.max(0, this._handleRadius - channel_r) + 5),
+			y: this._startLabelBelow ? (channel_r + 15) : this._startEndLabelSize/1.75 - channel_r/2,
+			anchor: this._endLabelBelow ? "middle" : "start",
+			font_size: this._startEndLabelSize
 		});
 	}
 

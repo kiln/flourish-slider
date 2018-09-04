@@ -8,14 +8,20 @@
     "test": "test"
   },
   "scripts": {
+    "lint": "eslint src",
     "test": "for t in build full-build rollup; do ( cd test/$t && rollup -c && cat preamble.html ../tests.html > test.html && open test.html); done",
     "prepublish": "rollup -c && rollup -c rollup-full.config.js && npm run minify",
-    "minify": "uglifyjs -m -o slider.min.js slider.js && uglifyjs -m -o slider-full.min.js slider-full.js"
+    "minify": "uglifyjs -m -o slider.min.js slider.js && uglifyjs -m -o slider-full.min.js slider-full.js",
+    "precommit": "lint-staged"
   },
   "author": "Kiln Enterprises Ltd",
   "license": "BSD-3-Clause",
   "devDependencies": {
+    "@flourish/eslint-plugin-flourish": "^0.7.2",
     "d3": "^4.4.2",
+    "eslint": "^5.5.0",
+    "husky": "^0.14.3",
+    "lint-staged": "^7.2.2",
     "rollup": "^0.41.1",
     "rollup-plugin-node-resolve": "^2.0.0",
     "uglify-js": "^2.7.5"
@@ -28,5 +34,8 @@
     "d3-axis": "^1.0.4",
     "d3-scale": "^1.0.4",
     "d3-selection": "^1.0.3"
+  },
+  "lint-staged": {
+    "*.js": "npm run lint --"
   }
 }
