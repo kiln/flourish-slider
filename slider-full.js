@@ -2565,7 +2565,7 @@ function linear() {
 //
 // If and when rollup manages to avoid this problem, we can revert back to the
 // straightforward approach.
-var VERSION = "1.3.0";
+var VERSION = "1.3.2";
 
 function Slider(selector$$1) {
 	this.container = select(selector$$1);
