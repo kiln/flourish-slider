@@ -213,6 +213,30 @@ function test12() {
 	sliders.test10 = slider;
 }
 
+function test13() {
+	var slider = Slider("#test13 .slider")
+		.domain([0, 1])
+		.tickFormat(d3.format("d"))
+		.value(0)
+		.margin({ left: 42, right: 42 })
+		.snap(true)
+		.startLabel("Off")
+		.endLabel("On")
+		.handleRadius(15)
+		.channelHeight(30)
+		.channelFill("#eee")
+		.on("change", function(x) {
+			slider
+				.channelFill(["#eee", "red"][x])
+				.handleFill(["black", "blue"][x])
+				.update();
+		})
+		.draw();
+
+	sliders.test13 = slider;
+}
+
+
 document.addEventListener("DOMContentLoaded", function() {
 	test1();
 	test2();
@@ -226,4 +250,5 @@ document.addEventListener("DOMContentLoaded", function() {
 	test10();
 	test11();
 	test12();
+	test13();
 });

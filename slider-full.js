@@ -2771,7 +2771,6 @@ Slider.prototype.draw = function Slider_draw() {
 	channel.exit().remove();
 
 	channel = channel.enter().append("rect").attr("class", "slider-channel")
-		.attr("fill", this._channelFill)
 		.attr("cursor", "pointer")
 		.on("click", function() {
 			var slider_x = Math.max(0, Math.min(w, d3_mouse(this)[0]));
@@ -2783,6 +2782,7 @@ Slider.prototype.draw = function Slider_draw() {
 		.merge(channel);
 
 	channel.attr("width", function(d) { return d.width; })
+		.attr("fill", this._channelFill)
 		.attr("height", function(d) { return d.height; })
 		.attr("y", function(d) { return -d.height/2; })
 		.attr("x", function(d) { return -d.channel_r; })
