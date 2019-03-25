@@ -6,3 +6,7 @@
 # 1.4.0
 
 * The channel fill colour can be updated after the slider has been drawn
+
+# 1.4.1
+
+* Update dependencies. This should not change the behaviour.

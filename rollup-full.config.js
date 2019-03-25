@@ -1,12 +1,14 @@
-var nodeResolve = require("rollup-plugin-node-resolve");
+import nodeResolve from "rollup-plugin-node-resolve";
 
 export default {
-  entry: "src/slider.js",
-  format: "umd",
-  moduleName: "Slider",
-  dest: "slider-full.js",
+	input: "src/slider.js",
+	output: {
+		format: "umd",
+		name: "Slider",
+		file: "slider-full.js",
+	},
 
-  plugins: [
-    nodeResolve({jsnext: true})
-  ]
+	plugins: [
+		nodeResolve({jsnext: true})
+	]
 };
