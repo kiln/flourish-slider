@@ -1,19 +1,21 @@
-var path = require("path"),
-    nodeResolve = require("rollup-plugin-node-resolve");
+import path from "path";
+import nodeResolve from "rollup-plugin-node-resolve";
 
 // See the comment in src/slider.js
 const d3_scale_linear = path.resolve("./node_modules/d3-scale/src/linear.js");
 
 export default {
-  entry: "src/slider.js",
-  format: "umd",
-  moduleName: "Slider",
-  dest: "slider.js",
+	input: "src/slider.js",
+	output: {
+		format: "umd",
+		name: "Slider",
+		file: "slider.js",
+		globals: { "d3-selection": "d3", "d3-axis": "d3", [d3_scale_linear]: "d3.scaleLinear" },
+	},
 
-  external: [ "d3-selection", "d3-axis", "d3-scale", d3_scale_linear ],
-  globals: { "d3-selection": "d3", "d3-axis": "d3", [d3_scale_linear]: "d3.scaleLinear" },
+	external: [ "d3-selection", "d3-axis", "d3-scale", d3_scale_linear ],
 
-  plugins: [
-    nodeResolve({jsnext: true})
-  ]
+	plugins: [
+		nodeResolve({jsnext: true})
+	]
 };
