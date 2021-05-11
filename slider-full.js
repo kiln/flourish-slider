@@ -2,7 +2,7 @@
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
   typeof define === 'function' && define.amd ? define(factory) :
   (global = global || self, global.Slider = factory());
-}(this, function () { 'use strict';
+}(this, (function () { 'use strict';
 
   var xhtml = "http://www.w3.org/1999/xhtml";
 
@@ -91,31 +91,14 @@
     return new Selection(subgroups, parents);
   }
 
-  var matcher = function(selector) {
+  function matcher(selector) {
     return function() {
       return this.matches(selector);
     };
-  };
-
-  if (typeof document !== "undefined") {
-    var element = document.documentElement;
-    if (!element.matches) {
-      var vendorMatches = element.webkitMatchesSelector
-          || element.msMatchesSelector
-          || element.mozMatchesSelector
-          || element.oMatchesSelector;
-      matcher = function(selector) {
-        return function() {
-          return vendorMatches.call(this, selector);
-        };
-      };
-    }
   }
 
-  var matcher$1 = matcher;
-
   function selection_filter(match) {
-    if (typeof match !== "function") match = matcher$1(match);
+    if (typeof match !== "function") match = matcher(match);
 
     for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
       for (var group = groups[j], n = group.length, subgroup = subgroups[j] = [], node, i = 0; i < n; ++i) {
@@ -277,6 +260,14 @@
     return new Selection(this._exit || this._groups.map(sparse), this._parents);
   }
 
+  function selection_join(onenter, onupdate, onexit) {
+    var enter = this.enter(), update = this, exit = this.exit();
+    enter = typeof onenter === "function" ? onenter(enter) : enter.append(onenter + "");
+    if (onupdate != null) update = onupdate(update);
+    if (onexit == null) exit.remove(); else onexit(exit);
+    return enter && update ? enter.merge(update).order() : update;
+  }
+
   function selection_merge(selection) {
 
     for (var groups0 = this._groups, groups1 = selection._groups, m0 = groups0.length, m1 = groups1.length, m = Math.min(m0, m1), merges = new Array(m0), j = 0; j < m; ++j) {
@@ -299,7 +290,7 @@
     for (var groups = this._groups, j = -1, m = groups.length; ++j < m;) {
       for (var group = groups[j], i = group.length - 1, next = group[i], node; --i >= 0;) {
         if (node = group[i]) {
-          if (next && next !== node.nextSibling) next.parentNode.insertBefore(node, next);
+          if (next && node.compareDocumentPosition(next) ^ 4) next.parentNode.insertBefore(node, next);
           next = node;
         }
       }
@@ -675,11 +666,13 @@
   }
 
   function selection_cloneShallow() {
-    return this.parentNode.insertBefore(this.cloneNode(false), this.nextSibling);
+    var clone = this.cloneNode(false), parent = this.parentNode;
+    return parent ? parent.insertBefore(clone, this.nextSibling) : clone;
   }
 
   function selection_cloneDeep() {
-    return this.parentNode.insertBefore(this.cloneNode(true), this.nextSibling);
+    var clone = this.cloneNode(true), parent = this.parentNode;
+    return parent ? parent.insertBefore(clone, this.nextSibling) : clone;
   }
 
   function selection_clone(deep) {
@@ -697,8 +690,8 @@
   var event = null;
 
   if (typeof document !== "undefined") {
-    var element$1 = document.documentElement;
-    if (!("onmouseenter" in element$1)) {
+    var element = document.documentElement;
+    if (!("onmouseenter" in element)) {
       filterEvents = {mouseenter: "mouseover", mouseleave: "mouseout"};
     }
   }
@@ -841,6 +834,7 @@
     data: selection_data,
     enter: selection_enter,
     exit: selection_exit,
+    join: selection_join,
     merge: selection_merge,
     order: selection_order,
     sort: selection_sort,
@@ -1175,8 +1169,7 @@
   var reI = "\\s*([+-]?\\d+)\\s*",
       reN = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*",
       reP = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
-      reHex3 = /^#([0-9a-f]{3})$/,
-      reHex6 = /^#([0-9a-f]{6})$/,
+      reHex = /^#([0-9a-f]{3,8})$/,
       reRgbInteger = new RegExp("^rgb\\(" + [reI, reI, reI] + "\\)$"),
       reRgbPercent = new RegExp("^rgb\\(" + [reP, reP, reP] + "\\)$"),
       reRgbaInteger = new RegExp("^rgba\\(" + [reI, reI, reI, reN] + "\\)$"),
@@ -1336,29 +1329,46 @@
   };
 
   define(Color, color, {
+    copy: function(channels) {
+      return Object.assign(new this.constructor, this, channels);
+    },
     displayable: function() {
       return this.rgb().displayable();
     },
-    hex: function() {
-      return this.rgb().hex();
-    },
-    toString: function() {
-      return this.rgb() + "";
-    }
+    hex: color_formatHex, // Deprecated! Use color.formatHex.
+    formatHex: color_formatHex,
+    formatHsl: color_formatHsl,
+    formatRgb: color_formatRgb,
+    toString: color_formatRgb
   });
 
+  function color_formatHex() {
+    return this.rgb().formatHex();
+  }
+
+  function color_formatHsl() {
+    return hslConvert(this).formatHsl();
+  }
+
+  function color_formatRgb() {
+    return this.rgb().formatRgb();
+  }
+
   function color(format) {
-    var m;
+    var m, l;
     format = (format + "").trim().toLowerCase();
-    return (m = reHex3.exec(format)) ? (m = parseInt(m[1], 16), new Rgb((m >> 8 & 0xf) | (m >> 4 & 0x0f0), (m >> 4 & 0xf) | (m & 0xf0), ((m & 0xf) << 4) | (m & 0xf), 1)) // #f00
-        : (m = reHex6.exec(format)) ? rgbn(parseInt(m[1], 16)) // #ff0000
+    return (m = reHex.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn(m) // #ff0000
+        : l === 3 ? new Rgb((m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), ((m & 0xf) << 4) | (m & 0xf), 1) // #f00
+        : l === 8 ? rgba(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
+        : l === 4 ? rgba((m >> 12 & 0xf) | (m >> 8 & 0xf0), (m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), (((m & 0xf) << 4) | (m & 0xf)) / 0xff) // #f000
+        : null) // invalid hex
         : (m = reRgbInteger.exec(format)) ? new Rgb(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
         : (m = reRgbPercent.exec(format)) ? new Rgb(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
         : (m = reRgbaInteger.exec(format)) ? rgba(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
         : (m = reRgbaPercent.exec(format)) ? rgba(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
         : (m = reHslPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
         : (m = reHslaPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
-        : named.hasOwnProperty(format) ? rgbn(named[format])
+        : named.hasOwnProperty(format) ? rgbn(named[format]) // eslint-disable-line no-prototype-builtins
         : format === "transparent" ? new Rgb(NaN, NaN, NaN, 0)
         : null;
   }
@@ -1403,23 +1413,29 @@
       return this;
     },
     displayable: function() {
-      return (0 <= this.r && this.r <= 255)
-          && (0 <= this.g && this.g <= 255)
-          && (0 <= this.b && this.b <= 255)
+      return (-0.5 <= this.r && this.r < 255.5)
+          && (-0.5 <= this.g && this.g < 255.5)
+          && (-0.5 <= this.b && this.b < 255.5)
           && (0 <= this.opacity && this.opacity <= 1);
     },
-    hex: function() {
-      return "#" + hex(this.r) + hex(this.g) + hex(this.b);
-    },
-    toString: function() {
-      var a = this.opacity; a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
-      return (a === 1 ? "rgb(" : "rgba(")
-          + Math.max(0, Math.min(255, Math.round(this.r) || 0)) + ", "
-          + Math.max(0, Math.min(255, Math.round(this.g) || 0)) + ", "
-          + Math.max(0, Math.min(255, Math.round(this.b) || 0))
-          + (a === 1 ? ")" : ", " + a + ")");
-    }
+    hex: rgb_formatHex, // Deprecated! Use color.formatHex.
+    formatHex: rgb_formatHex,
+    formatRgb: rgb_formatRgb,
+    toString: rgb_formatRgb
   }));
+
+  function rgb_formatHex() {
+    return "#" + hex(this.r) + hex(this.g) + hex(this.b);
+  }
+
+  function rgb_formatRgb() {
+    var a = this.opacity; a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
+    return (a === 1 ? "rgb(" : "rgba(")
+        + Math.max(0, Math.min(255, Math.round(this.r) || 0)) + ", "
+        + Math.max(0, Math.min(255, Math.round(this.g) || 0)) + ", "
+        + Math.max(0, Math.min(255, Math.round(this.b) || 0))
+        + (a === 1 ? ")" : ", " + a + ")");
+  }
 
   function hex(value) {
     value = Math.max(0, Math.min(255, Math.round(value) || 0));
@@ -1496,6 +1512,14 @@
       return (0 <= this.s && this.s <= 1 || isNaN(this.s))
           && (0 <= this.l && this.l <= 1)
           && (0 <= this.opacity && this.opacity <= 1);
+    },
+    formatHsl: function() {
+      var a = this.opacity; a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
+      return (a === 1 ? "hsl(" : "hsla(")
+          + (this.h || 0) + ", "
+          + (this.s || 0) * 100 + "%, "
+          + (this.l || 0) * 100 + "%"
+          + (a === 1 ? ")" : ", " + a + ")");
     }
   }));
 
@@ -1510,7 +1534,7 @@
   var deg2rad = Math.PI / 180;
   var rad2deg = 180 / Math.PI;
 
-  // https://beta.observablehq.com/@mbostock/lab-and-rgb
+  // https://observablehq.com/@mbostock/lab-and-rgb
   var K = 18,
       Xn = 0.96422,
       Yn = 1,
@@ -1522,11 +1546,7 @@
 
   function labConvert(o) {
     if (o instanceof Lab) return new Lab(o.l, o.a, o.b, o.opacity);
-    if (o instanceof Hcl) {
-      if (isNaN(o.h)) return new Lab(o.l, 0, 0, o.opacity);
-      var h = o.h * deg2rad;
-      return new Lab(o.l, Math.cos(h) * o.c, Math.sin(h) * o.c, o.opacity);
-    }
+    if (o instanceof Hcl) return hcl2lab(o);
     if (!(o instanceof Rgb)) o = rgbConvert(o);
     var r = rgb2lrgb(o.r),
         g = rgb2lrgb(o.g),
@@ -1592,7 +1612,7 @@
   function hclConvert(o) {
     if (o instanceof Hcl) return new Hcl(o.h, o.c, o.l, o.opacity);
     if (!(o instanceof Lab)) o = labConvert(o);
-    if (o.a === 0 && o.b === 0) return new Hcl(NaN, 0, o.l, o.opacity);
+    if (o.a === 0 && o.b === 0) return new Hcl(NaN, 0 < o.l && o.l < 100 ? 0 : NaN, o.l, o.opacity);
     var h = Math.atan2(o.b, o.a) * rad2deg;
     return new Hcl(h < 0 ? h + 360 : h, Math.sqrt(o.a * o.a + o.b * o.b), o.l, o.opacity);
   }
@@ -1608,6 +1628,12 @@
     this.opacity = +opacity;
   }
 
+  function hcl2lab(o) {
+    if (isNaN(o.h)) return new Lab(o.l, 0, 0, o.opacity);
+    var h = o.h * deg2rad;
+    return new Lab(o.l, Math.cos(h) * o.c, Math.sin(h) * o.c, o.opacity);
+  }
+
   define(Hcl, hcl, extend(Color, {
     brighter: function(k) {
       return new Hcl(this.h, this.c, this.l + K * (k == null ? 1 : k), this.opacity);
@@ -1616,7 +1642,7 @@
       return new Hcl(this.h, this.c, this.l - K * (k == null ? 1 : k), this.opacity);
     },
     rgb: function() {
-      return labConvert(this).rgb();
+      return hcl2lab(this).rgb();
     }
   }));
 
@@ -1729,7 +1755,22 @@
     return rgb$1;
   })(1);
 
-  function array(a, b) {
+  function numberArray(a, b) {
+    if (!b) b = [];
+    var n = a ? Math.min(b.length, a.length) : 0,
+        c = b.slice(),
+        i;
+    return function(t) {
+      for (i = 0; i < n; ++i) c[i] = a[i] * (1 - t) + b[i] * t;
+      return c;
+    };
+  }
+
+  function isNumberArray(x) {
+    return ArrayBuffer.isView(x) && !(x instanceof DataView);
+  }
+
+  function genericArray(a, b) {
     var nb = b ? b.length : 0,
         na = a ? Math.min(nb, a.length) : 0,
         x = new Array(na),
@@ -1747,14 +1788,14 @@
 
   function date(a, b) {
     var d = new Date;
-    return a = +a, b -= a, function(t) {
-      return d.setTime(a + b * t), d;
+    return a = +a, b = +b, function(t) {
+      return d.setTime(a * (1 - t) + b * t), d;
     };
   }
 
   function reinterpolate(a, b) {
-    return a = +a, b -= a, function(t) {
-      return a + b * t;
+    return a = +a, b = +b, function(t) {
+      return a * (1 - t) + b * t;
     };
   }
 
@@ -1850,25 +1891,22 @@
         : t === "string" ? ((c = color(b)) ? (b = c, rgb$1) : string)
         : b instanceof color ? rgb$1
         : b instanceof Date ? date
-        : Array.isArray(b) ? array
+        : isNumberArray(b) ? numberArray
+        : Array.isArray(b) ? genericArray
         : typeof b.valueOf !== "function" && typeof b.toString !== "function" || isNaN(b) ? object
         : reinterpolate)(a, b);
   }
 
   function interpolateRound(a, b) {
-    return a = +a, b -= a, function(t) {
-      return Math.round(a + b * t);
+    return a = +a, b = +b, function(t) {
+      return Math.round(a * (1 - t) + b * t);
     };
   }
 
-  var degrees = 180 / Math.PI;
+  var array = Array.prototype;
 
-  var rho = Math.SQRT2;
-
-  var array$1 = Array.prototype;
-
-  var map = array$1.map;
-  var slice$1 = array$1.slice;
+  var map = array.map;
+  var slice$1 = array.slice;
 
   function constant$2(x) {
     return function() {
@@ -1988,10 +2026,16 @@
     return rescale();
   }
 
+  function formatDecimal(x) {
+    return Math.abs(x = Math.round(x)) >= 1e21
+        ? x.toLocaleString("en").replace(/,/g, "")
+        : x.toString(10);
+  }
+
   // Computes the decimal coefficient and exponent of the specified number x with
   // significant digits p, where x is positive and p is in [1, 21] or undefined.
-  // For example, formatDecimal(1.23) returns ["123", 0].
-  function formatDecimal(x, p) {
+  // For example, formatDecimalParts(1.23) returns ["123", 0].
+  function formatDecimalParts(x, p) {
     if ((i = (x = p ? x.toExponential(p - 1) : x.toExponential()).indexOf("e")) < 0) return null; // NaN, ±Infinity
     var i, coefficient = x.slice(0, i);
 
@@ -2004,7 +2048,7 @@
   }
 
   function exponent(x) {
-    return x = formatDecimal(Math.abs(x)), x ? x[1] : NaN;
+    return x = formatDecimalParts(Math.abs(x)), x ? x[1] : NaN;
   }
 
   function formatGroup(grouping, thousands) {
@@ -2038,24 +2082,35 @@
   var re = /^(?:(.)?([<>=^]))?([+\-( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?(~)?([a-z%])?$/i;
 
   function formatSpecifier(specifier) {
-    return new FormatSpecifier(specifier);
+    if (!(match = re.exec(specifier))) throw new Error("invalid format: " + specifier);
+    var match;
+    return new FormatSpecifier({
+      fill: match[1],
+      align: match[2],
+      sign: match[3],
+      symbol: match[4],
+      zero: match[5],
+      width: match[6],
+      comma: match[7],
+      precision: match[8] && match[8].slice(1),
+      trim: match[9],
+      type: match[10]
+    });
   }
 
   formatSpecifier.prototype = FormatSpecifier.prototype; // instanceof
 
   function FormatSpecifier(specifier) {
-    if (!(match = re.exec(specifier))) throw new Error("invalid format: " + specifier);
-    var match;
-    this.fill = match[1] || " ";
-    this.align = match[2] || ">";
-    this.sign = match[3] || "-";
-    this.symbol = match[4] || "";
-    this.zero = !!match[5];
-    this.width = match[6] && +match[6];
-    this.comma = !!match[7];
-    this.precision = match[8] && +match[8].slice(1);
-    this.trim = !!match[9];
-    this.type = match[10] || "";
+    this.fill = specifier.fill === undefined ? " " : specifier.fill + "";
+    this.align = specifier.align === undefined ? ">" : specifier.align + "";
+    this.sign = specifier.sign === undefined ? "-" : specifier.sign + "";
+    this.symbol = specifier.symbol === undefined ? "" : specifier.symbol + "";
+    this.zero = !!specifier.zero;
+    this.width = specifier.width === undefined ? undefined : +specifier.width;
+    this.comma = !!specifier.comma;
+    this.precision = specifier.precision === undefined ? undefined : +specifier.precision;
+    this.trim = !!specifier.trim;
+    this.type = specifier.type === undefined ? "" : specifier.type + "";
   }
 
   FormatSpecifier.prototype.toString = function() {
@@ -2064,9 +2119,9 @@
         + this.sign
         + this.symbol
         + (this.zero ? "0" : "")
-        + (this.width == null ? "" : Math.max(1, this.width | 0))
+        + (this.width === undefined ? "" : Math.max(1, this.width | 0))
         + (this.comma ? "," : "")
-        + (this.precision == null ? "" : "." + Math.max(0, this.precision | 0))
+        + (this.precision === undefined ? "" : "." + Math.max(0, this.precision | 0))
         + (this.trim ? "~" : "")
         + this.type;
   };
@@ -2077,7 +2132,7 @@
       switch (s[i]) {
         case ".": i0 = i1 = i; break;
         case "0": if (i0 === 0) i0 = i; i1 = i; break;
-        default: if (i0 > 0) { if (!+s[i]) break out; i0 = 0; } break;
+        default: if (!+s[i]) break out; if (i0 > 0) i0 = 0; break;
       }
     }
     return i0 > 0 ? s.slice(0, i0) + s.slice(i1 + 1) : s;
@@ -2086,7 +2141,7 @@
   var prefixExponent;
 
   function formatPrefixAuto(x, p) {
-    var d = formatDecimal(x, p);
+    var d = formatDecimalParts(x, p);
     if (!d) return x + "";
     var coefficient = d[0],
         exponent = d[1],
@@ -2095,11 +2150,11 @@
     return i === n ? coefficient
         : i > n ? coefficient + new Array(i - n + 1).join("0")
         : i > 0 ? coefficient.slice(0, i) + "." + coefficient.slice(i)
-        : "0." + new Array(1 - i).join("0") + formatDecimal(x, Math.max(0, p + i - 1))[0]; // less than 1y!
+        : "0." + new Array(1 - i).join("0") + formatDecimalParts(x, Math.max(0, p + i - 1))[0]; // less than 1y!
   }
 
   function formatRounded(x, p) {
-    var d = formatDecimal(x, p);
+    var d = formatDecimalParts(x, p);
     if (!d) return x + "";
     var coefficient = d[0],
         exponent = d[1];
@@ -2112,7 +2167,7 @@
     "%": function(x, p) { return (x * 100).toFixed(p); },
     "b": function(x) { return Math.round(x).toString(2); },
     "c": function(x) { return x + ""; },
-    "d": function(x) { return Math.round(x).toString(10); },
+    "d": formatDecimal,
     "e": function(x, p) { return x.toExponential(p); },
     "f": function(x, p) { return x.toFixed(p); },
     "g": function(x, p) { return x.toPrecision(p); },
@@ -2128,14 +2183,18 @@
     return x;
   }
 
-  var prefixes = ["y","z","a","f","p","n","µ","m","","k","M","G","T","P","E","Z","Y"];
+  var map$1 = Array.prototype.map,
+      prefixes = ["y","z","a","f","p","n","µ","m","","k","M","G","T","P","E","Z","Y"];
 
   function formatLocale(locale) {
-    var group = locale.grouping && locale.thousands ? formatGroup(locale.grouping, locale.thousands) : identity$1,
-        currency = locale.currency,
-        decimal = locale.decimal,
-        numerals = locale.numerals ? formatNumerals(locale.numerals) : identity$1,
-        percent = locale.percent || "%";
+    var group = locale.grouping === undefined || locale.thousands === undefined ? identity$1 : formatGroup(map$1.call(locale.grouping, Number), locale.thousands + ""),
+        currencyPrefix = locale.currency === undefined ? "" : locale.currency[0] + "",
+        currencySuffix = locale.currency === undefined ? "" : locale.currency[1] + "",
+        decimal = locale.decimal === undefined ? "." : locale.decimal + "",
+        numerals = locale.numerals === undefined ? identity$1 : formatNumerals(map$1.call(locale.numerals, String)),
+        percent = locale.percent === undefined ? "%" : locale.percent + "",
+        minus = locale.minus === undefined ? "-" : locale.minus + "",
+        nan = locale.nan === undefined ? "NaN" : locale.nan + "";
 
     function newFormat(specifier) {
       specifier = formatSpecifier(specifier);
@@ -2155,15 +2214,15 @@
       if (type === "n") comma = true, type = "g";
 
       // The "" type, and any invalid type, is an alias for ".12~g".
-      else if (!formatTypes[type]) precision == null && (precision = 12), trim = true, type = "g";
+      else if (!formatTypes[type]) precision === undefined && (precision = 12), trim = true, type = "g";
 
       // If zero fill is specified, padding goes after sign and before digits.
       if (zero || (fill === "0" && align === "=")) zero = true, fill = "0", align = "=";
 
       // Compute the prefix and suffix.
       // For SI-prefix, the suffix is lazily computed.
-      var prefix = symbol === "$" ? currency[0] : symbol === "#" && /[boxX]/.test(type) ? "0" + type.toLowerCase() : "",
-          suffix = symbol === "$" ? currency[1] : /[%p]/.test(type) ? percent : "";
+      var prefix = symbol === "$" ? currencyPrefix : symbol === "#" && /[boxX]/.test(type) ? "0" + type.toLowerCase() : "",
+          suffix = symbol === "$" ? currencySuffix : /[%p]/.test(type) ? percent : "";
 
       // What format function should we use?
       // Is this an integer type?
@@ -2175,7 +2234,7 @@
       // or clamp the specified precision to the supported range.
       // For significant precision, it must be in [1, 21].
       // For fixed precision, it must be in [0, 20].
-      precision = precision == null ? 6
+      precision = precision === undefined ? 6
           : /[gprs]/.test(type) ? Math.max(1, Math.min(21, precision))
           : Math.max(0, Math.min(20, precision));
 
@@ -2190,18 +2249,20 @@
         } else {
           value = +value;
 
+          // Determine the sign. -0 is not less than 0, but 1 / -0 is!
+          var valueNegative = value < 0 || 1 / value < 0;
+
           // Perform the initial formatting.
-          var valueNegative = value < 0;
-          value = formatType(Math.abs(value), precision);
+          value = isNaN(value) ? nan : formatType(Math.abs(value), precision);
 
           // Trim insignificant zeros.
           if (trim) value = formatTrim(value);
 
-          // If a negative value rounds to zero during formatting, treat as positive.
-          if (valueNegative && +value === 0) valueNegative = false;
+          // If a negative value rounds to zero after formatting, and no explicit positive sign is requested, hide the sign.
+          if (valueNegative && +value === 0 && sign !== "+") valueNegative = false;
 
           // Compute the prefix and suffix.
-          valuePrefix = (valueNegative ? (sign === "(" ? sign : "-") : sign === "-" || sign === "(" ? "" : sign) + valuePrefix;
+          valuePrefix = (valueNegative ? (sign === "(" ? sign : minus) : sign === "-" || sign === "(" ? "" : sign) + valuePrefix;
           valueSuffix = (type === "s" ? prefixes[8 + prefixExponent / 3] : "") + valueSuffix + (valueNegative && sign === "(" ? ")" : "");
 
           // Break the formatted value into the integer “value” part that can be
@@ -2270,7 +2331,8 @@
     decimal: ".",
     thousands: ",",
     grouping: [3],
-    currency: ["$", ""]
+    currency: ["$", ""],
+    minus: "-"
   });
 
   function defaultLocale(definition) {
@@ -2387,7 +2449,7 @@
     return linearish(scale);
   }
 
-  var VERSION = "1.3.2";
+  var VERSION = "1.4.2";
 
   function Slider(selector) {
   	this.container = d3_select(selector);
@@ -2738,4 +2800,4 @@
 
   return Flourish_slider;
 
-}));
+})));
