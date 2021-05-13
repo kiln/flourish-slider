@@ -14,7 +14,7 @@ import { axisBottom as d3_axisBottom } from "d3-axis";
 // straightforward approach.
 import d3_scaleLinear from "d3-scale/src/linear";
 
-var VERSION = "1.3.2";
+var VERSION = "1.4.2";
 
 function Slider(selector) {
 	this.container = d3_select(selector);

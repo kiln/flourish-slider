@@ -2,11 +2,11 @@
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('d3-selection'), require('d3-axis'), require('../node_modules/d3-scale/src/linear.js')) :
 	typeof define === 'function' && define.amd ? define(['d3-selection', 'd3-axis', '../node_modules/d3-scale/src/linear.js'], factory) :
 	(global = global || self, global.Slider = factory(global.d3, global.d3, global.d3.scaleLinear));
-}(this, function (d3Selection, d3Axis, d3_scaleLinear) { 'use strict';
+}(this, (function (d3Selection, d3Axis, d3_scaleLinear) { 'use strict';
 
-	d3_scaleLinear = d3_scaleLinear && d3_scaleLinear.hasOwnProperty('default') ? d3_scaleLinear['default'] : d3_scaleLinear;
+	d3_scaleLinear = d3_scaleLinear && Object.prototype.hasOwnProperty.call(d3_scaleLinear, 'default') ? d3_scaleLinear['default'] : d3_scaleLinear;
 
-	var VERSION = "1.3.2";
+	var VERSION = "1.4.2";
 
 	function Slider(selector) {
 		this.container = d3Selection.select(selector);
@@ -357,4 +357,4 @@
 
 	return Flourish_slider;
 
-}));
+})));
