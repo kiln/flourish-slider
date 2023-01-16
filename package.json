@@ -11,7 +11,7 @@
     "lint": "eslint src",
     "test": "for t in build full-build rollup; do ( cd test/$t && rollup -c && cat preamble.html ../tests.html > test.html && open test.html); done",
     "prepublish": "rollup -c && rollup -c rollup-full.config.js && npm run minify",
-    "minify": "uglifyjs -m -o slider.min.js slider.js && uglifyjs -m -o slider-full.min.js slider-full.js"
+    "minify": "terser -m -o slider.min.js slider.js && terser -m -o slider-full.min.js slider-full.js"
   },
   "author": "Kiln Enterprises Ltd",
   "license": "BSD-3-Clause",
@@ -22,7 +22,7 @@
     "lint-staged": "^11.0.0",
     "rollup": "^1.7.3",
     "rollup-plugin-node-resolve": "^4.0.1",
-    "uglify-js": "^2.7.5"
+    "terser": "^5.16.1"
   },
   "repository": {
     "type": "git",
@@ -31,7 +31,7 @@
   "dependencies": {
     "d3-axis": "^1.0.4",
     "d3-format": "^3.1.0",
-    "d3-scale": "^1.0.4",
+    "d3-scale": "^4.0.2",
     "d3-selection": "^1.0.3"
   },
   "husky": {
