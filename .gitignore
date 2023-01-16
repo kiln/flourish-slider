@@ -3,3 +3,7 @@
 /test/*/test.js
 /test/*/test.js.map
 /test/*/test.html
+slider-full.js
+slider-full.min.js
+slider.js
+slider.min.js
