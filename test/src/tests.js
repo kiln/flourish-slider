@@ -1,4 +1,6 @@
-import * as d3 from "d3";
+import { select } from "d3-selection";
+import { format } from "d3-format";
+import { scaleTime } from "d3-scale";
 import Slider from "../../src/slider";
 
 
@@ -6,10 +8,10 @@ import Slider from "../../src/slider";
 var sliders = window.sliders = {};
 
 function test1() {
-	var output = d3.select("#test1 .output");
+	var output = select("#test1 .output");
 	var slider = Slider("#test1 .slider").margin({top: 13})
 		.on("change", function(x) {
-			output.text(d3.format(".4f")(x));
+			output.text(format(".4f")(x));
 		})
 		.draw();
 
@@ -20,10 +22,10 @@ function test1() {
 		console.error("test1: Updating the slider replaced the channel element");
 	}
 
-	d3.select("#test1 button.reset").on("click", function() {
+	select("#test1 button.reset").on("click", function() {
 		slider.value(0.5).draw();
 	});
-	d3.select("#test1 button.redraw").on("click", function() {
+	select("#test1 button.redraw").on("click", function() {
 		slider.draw();
 	});
 
@@ -52,14 +54,14 @@ function test2() {
 }
 
 function test3() {
-	var output = d3.select("#test3 .output");
+	var output = select("#test3 .output");
 	var slider = Slider("#test3 .slider")
 		.domain([2000, 2014])
 		.axis(true)
 		.ticks(2)
-		.tickFormat(d3.format("d"))
+		.tickFormat(format("d"))
 		.on("change", function(x) {
-			output.text(d3.format(".4f")(x));
+			output.text(format(".4f")(x));
 		})
 		.draw();
 
@@ -67,14 +69,14 @@ function test3() {
 }
 
 function test4() {
-	var output = d3.select("#test4 .output");
+	var output = select("#test4 .output");
 	var slider = Slider("#test4 .slider")
-		.scale(d3.scaleTime)
+		.scale(scaleTime)
 		.domain([
 			new Date(2012, 0, 1),
 			new Date(2013, 0, 1)
 		])
-		.axis(true).ticks(4).tickFormat(d3.scaleTime().tickFormat())
+		.axis(true).ticks(4).tickFormat(scaleTime().tickFormat())
 		.on("change", function(x) {
 			output.text(x.toISOString().substr(0, 10));
 		})
@@ -87,7 +89,7 @@ function test5() {
 	var slider = Slider("#test5 .slider")
 		.axis(true)
 		.handleFill("red")
-		.on("change", function(x) { slider.update(); })
+		.on("change", function() { slider.update(); })
 		.update();
 
 	sliders.test5 = slider;
@@ -97,7 +99,7 @@ function test6() {
 	var slider = Slider("#test6 .slider")
 		.domain([1900, 2000])
 		.axis(true)
-		.tickFormat(d3.format("d"))
+		.tickFormat(format("d"))
 		.value(1950)
 		.snap(true)
 		.label("Year")
@@ -115,7 +117,7 @@ function test7() {
 	var slider = Slider("#test7 .slider")
 		.domain([1900, 2000])
 		.axis(true)
-		.tickFormat(d3.format("d"))
+		.tickFormat(format("d"))
 		.value(1950)
 		.snap(true)
 		.label("Year")
@@ -133,7 +135,7 @@ function test8() {
 	var slider = Slider("#test8 .slider")
 		.domain([1900, 2000])
 		.margin({top: 20, left: 100, right: 100})
-		.tickFormat(d3.format("d"))
+		.tickFormat(format("d"))
 		.value(1950)
 		.snap(true)
 		.startLabel(1900)
@@ -153,7 +155,7 @@ function test9() {
 	var slider = Slider("#test9 .slider")
 		.domain([1900, 2000])
 		.margin({top: 20, left: 100, right: 100})
-		.tickFormat(d3.format("d"))
+		.tickFormat(format("d"))
 		.value(1950)
 		.snap(true)
 		.startLabel(1900)
@@ -174,7 +176,7 @@ function test9() {
 function test10() {
 	var slider = Slider("#test10 .slider")
 		.domain([0, 1])
-		.tickFormat(d3.format("d"))
+		.tickFormat(format("d"))
 		.value(0)
 		.margin({ left: 42, right: 42 })
 		.snap(true)
@@ -191,7 +193,7 @@ function test11() {
 	var slider = Slider("#test11 .slider svg g")
 		.width(400).height(50)
 		.domain([0, 10])
-		.tickFormat(d3.format("d"))
+		.tickFormat(format("d"))
 		.value(0)
 		.margin({ left: 42, right: 42 })
 		.handleRadius(15)
@@ -203,7 +205,7 @@ function test11() {
 
 function test12() {
 	var slider = Slider("#test12 .slider")
-		.tickFormat(d3.format("d"))
+		.tickFormat(format("d"))
 		.margin({ left: 42, right: 42 })
 		.handleRadius(15)
 		.channelHeight(30)
@@ -216,7 +218,7 @@ function test12() {
 function test13() {
 	var slider = Slider("#test13 .slider")
 		.domain([0, 1])
-		.tickFormat(d3.format("d"))
+		.tickFormat(format("d"))
 		.value(0)
 		.margin({ left: 42, right: 42 })
 		.snap(true)
